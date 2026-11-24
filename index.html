@@ -1221,29 +1221,35 @@ function switchCategory(cat) {
 </script>
   <style>
   body.free-mode {
-    --bg: #f4f8ee;
-    --fg: #1b2a16;
-    --dim: #4c6142;
-    --accent: #558b2f;
-    --accent-glow: rgba(85, 139, 47, 0.35);
-    --line: rgba(85, 139, 47, 0.22);
+    --bg: #DAF1DE;
+    --fg: #051F20;
+    --dim: #235347;
+    --accent: #163832;
+    --accent-glow: rgba(35, 83, 71, 0.28);
+    --line: rgba(22, 56, 50, 0.22);
+    color-scheme: light;
   }
-  body.free-mode header { background: rgba(244, 248, 238, 0.85); border-bottom-color: rgba(85, 139, 47, 0.15); }
-  body.free-mode header b { color: #1b2a16; }
+  body.free-mode header { background: rgba(218, 241, 222, 0.85); border-bottom-color: rgba(22, 56, 50, 0.15); }
+  body.free-mode header b { color: #051F20; }
   body.free-mode .pinterest-gradient {
-    background: radial-gradient(circle at 75% 25%, rgba(156, 204, 101, 0.35) 0%, transparent 55%),
-                radial-gradient(circle at 20% 75%, rgba(104, 159, 56, 0.22) 0%, transparent 60%),
-                linear-gradient(180deg, #f8fbf2 0%, #e6f0d8 100%);
+    background: radial-gradient(circle at 80% 20%, rgba(142, 182, 155, 0.48) 0%, transparent 52%),
+                radial-gradient(circle at 18% 82%, rgba(35, 83, 71, 0.22) 0%, transparent 58%),
+                linear-gradient(180deg, #edf9ef 0%, #DAF1DE 55%, #c5e3cb 100%);
   }
-  body.free-mode .portrait-visual { opacity: 0.15; mix-blend-mode: multiply; filter: hue-rotate(140deg) saturate(0.9); }
-  body.free-mode .hub-tabs { background: rgba(255, 255, 255, 0.78); border-color: rgba(85, 139, 47, 0.28); }
-  body.free-mode .hub-tab-btn.active { background: linear-gradient(135deg, #558b2f, #7cb342); color: #fff; }
-  body.free-mode .hub-card { background: rgba(255, 255, 255, 0.85); border-color: rgba(85, 139, 47, 0.25); }
-  body.free-mode .hub-card .badge.free { background: rgba(124, 179, 66, 0.18); color: #33691e; border-color: rgba(85, 139, 47, 0.35); }
-  body.free-mode .hub-card .action-link { color: #33691e !important; }
-  body.free-mode #content-free .shot { background: radial-gradient(circle at center, #e6f2d5, #d4e8bc) !important; border-color: rgba(85, 139, 47, 0.3) !important; }
-  body.free-mode #content-free .shot span { color: #33691e !important; }
-  body.free-mode #content-free .shot svg { filter: hue-rotate(140deg) saturate(0.85) brightness(0.75); }
+  body.free-mode .portrait-visual { opacity: 0.16; mix-blend-mode: multiply; filter: hue-rotate(155deg) saturate(0.7); }
+  body.free-mode .hub-tabs { background: rgba(255, 255, 255, 0.75); border-color: rgba(35, 83, 71, 0.25); box-shadow: 0 8px 24px rgba(5, 31, 32, 0.08); }
+  body.free-mode .hub-tab-btn.active { background: linear-gradient(135deg, #0B2B26, #235347); color: #DAF1DE; box-shadow: 0 6px 20px rgba(11, 43, 38, 0.28); }
+  body.free-mode .hub-card { background: rgba(255, 255, 255, 0.82); border-color: rgba(35, 83, 71, 0.22); box-shadow: 0 12px 30px rgba(5, 31, 32, 0.08); }
+  body.free-mode .hub-card:hover { border-color: #163832; box-shadow: 0 16px 36px rgba(11, 43, 38, 0.16); }
+  body.free-mode .hub-card .badge.free { background: rgba(142, 182, 155, 0.38); color: #0B2B26; border-color: rgba(35, 83, 71, 0.3); }
+  body.free-mode .hub-card .folder-pill, body.free-mode .copy-link-btn { background: rgba(22, 56, 50, 0.08); color: #163832; border-color: rgba(22, 56, 50, 0.22); }
+  body.free-mode .hub-card .action-link { color: #163832 !important; }
+  body.free-mode #content-free .shot { background: radial-gradient(circle at center, #235347, #051F20) !important; border-color: rgba(142, 182, 155, 0.35) !important; }
+  body.free-mode #content-free .shot span { color: #8EB69B !important; }
+  body.free-mode #link-free-apk .shot svg { fill: #DAF1DE !important; }
+  body.free-mode #link-free-tools .shot svg { stroke: #DAF1DE !important; }
+  body.free-mode #link-free-tools .shot svg circle { fill: #DAF1DE !important; }
+  body.free-mode #toast { background: #051F20; color: #DAF1DE; border-color: #8EB69B; }
 </style>
 
 </body>
