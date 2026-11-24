@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pijus – Developer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #09080e;
+  --fg: #f2f0f7;
+  --dim: #9995a8;
+  --accent: #a678ff;
+  --accent-glow: rgba(166, 120, 255, 0.4);
+  --line: #262233;
+  color-scheme: dark;
+  box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.6 'Manrope', system-ui, sans-serif;
+  overflow-x: hidden;
+  transition: background 0.8s ease;
+}
+
+/* Dynamic Pinterest-inspired Ambient Background with Portrait Overlay */
+body.free-mode {
+  --bg: #0a0612;
+  --accent: #ff82b2;
+  --accent-glow: rgba(255, 130, 178, 0.45);
+  --line: rgba(255, 180, 210, 0.16);
+}
+#portrait-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+body.free-mode #portrait-bg {
+  opacity: 1;
+  transform: scale(1);
+}
+.pinterest-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 75% 25%, rgba(255, 87, 140, 0.24) 0%, transparent 50%),
+              radial-gradient(circle at 20% 75%, rgba(135, 78, 255, 0.28) 0%, transparent 60%),
+              radial-gradient(circle at 50% 50%, rgba(18, 10, 30, 0.92) 0%, #08040d 100%);
+}
+.portrait-visual {
+  position: absolute;
+  right: -4%;
+  top: 8%;
+  width: min(620px, 85vw);
+  height: 90vh;
+  opacity: 0.34;
+  filter: drop-shadow(0 0 50px rgba(255, 120, 170, 0.32)) saturate(1.2);
+  mix-blend-mode: screen;
+}
+@media (max-width: 800px) {
+  .portrait-visual {
+    right: -12%;
+    top: 18%;
+    opacity: 0.24;
+  }
+}
+
+h1, h2, h3 {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  margin: 0;
+  line-height: 1.1;
+}
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Intro Overlay */
+#intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.8s ease 0.2s, visibility 0.8s;
+}
+#intro.done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+#beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(1000px, 100vw);
+  height: 0;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(166,120,255,0.02));
+  clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
+  transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  opacity: 0.7;
+}
+#intro.go #beam { height: 100%; }
+#hello {
+  font: 800 clamp(28px, 6vw, 64px)/1.1 'Unbounded', sans-serif;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.7s ease 0.9s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.9s;
+  position: relative;
+  text-align: center;
+  padding: 0 20px;
+}
+#intro.go #hello {
+  opacity: 1;
+  transform: translateY(0);
+}
+#skip {
+  position: absolute;
+  bottom: 32px;
+  right: 28px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 8px 18px;
+  border-radius: 99px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+#skip:hover {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+/* Header & Nav */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px clamp(20px, 5vw, 64px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(9, 8, 14, 0.72);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+header b {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+nav {
+  display: flex;
+  gap: 24px;
+  font-size: 14px;
+  font-weight: 500;
+}
+nav a {
+  color: var(--dim);
+  transition: color 0.2s;
+}
+nav a:hover { color: var(--accent); }
+
+/* Floating Elements */
+.social {
+  position: fixed;
+  left: clamp(16px, 2.5vw, 36px);
+  bottom: 36px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dim);
+}
+.social a:hover, .resume:hover { color: var(--accent); }
+.resume {
+  position: fixed;
+  right: clamp(20px, 4vw, 48px);
+  bottom: 34px;
+  z-index: 40;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+section {
+  min-height: 100vh;
+  padding: 130px clamp(24px, 7vw, 120px) 90px;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  section { padding: 105px 20px 70px; min-height: auto; }
+  .social { display: none; }
+  .resume { display: none; }
+  nav { gap: 16px; font-size: 13px; }
+}
+
+/* Hero Section */
+#hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 40px;
+  min-height: 100vh;
+}
+@media (max-width: 900px) {
+  #hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 100px;
+    gap: 24px;
+  }
+}
+#hero h1 {
+  font-size: clamp(36px, 6.5vw, 78px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.role {
+  display: inline-block;
+  color: var(--accent);
+  height: 1.2em;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-left: 10px;
+}
+.role span {
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1);
+}
+#hero p {
+  max-width: 46ch;
+  color: var(--dim);
+  margin: 22px 0 28px;
+  font-size: clamp(15px, 1.8vw, 18px);
+}
+@media (max-width: 900px) {
+  #hero p { margin: 18px auto; }
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 340px;
+}
+.glow {
+  position: absolute;
+  width: 75%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, rgba(166,120,255,0) 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+#char {
+  position: relative;
+  width: min(100%, 380px);
+  height: auto;
+  display: block;
+  cursor: pointer;
+  overflow: visible;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+  transition: transform 0.2s ease;
+}
+#char:hover { transform: scale(1.02); }
+#head, #eyeL, #eyeR {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+#eyeL, #eyeR { transition: transform 0.08s; }
+.hint {
+  position: absolute;
+  bottom: -6px;
+  font-size: 12px;
+  color: var(--dim);
+  background: rgba(255,255,255,0.05);
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+}
+
+/* Category Tab Switcher Section */
+#explore {
+  padding-top: 90px;
+  padding-bottom: 60px;
+  z-index: 10;
+}
+.hub-header {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 36px;
+}
+.hub-header h2 {
+  font-size: clamp(32px, 6vw, 62px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  transition: color 0.4s ease;
+}
+.hub-header h2 em {
+  font-style: normal;
+  color: var(--accent);
+  transition: color 0.4s ease;
+}
+.hub-tabs {
+  display: inline-flex;
+  background: #14111d;
+  padding: 6px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  gap: 6px;
+  margin: 20px auto 0;
+  transition: all 0.4s ease;
+}
+body.free-mode .hub-tabs {
+  background: rgba(28, 14, 38, 0.7);
+  backdrop-filter: blur(16px);
+  border-color: rgba(255, 130, 178, 0.3);
+  box-shadow: 0 8px 30px rgba(255, 105, 160, 0.15);
+}
+.hub-tab-btn {
+  background: transparent;
+  color: var(--dim);
+  border: none;
+  padding: 12px 26px;
+  border-radius: 99px;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.hub-tab-btn.active {
+  background: var(--accent);
+  color: #0b0816;
+  box-shadow: 0 4px 20px rgba(166,120,255,0.35);
+}
+body.free-mode .hub-tab-btn.active {
+  background: linear-gradient(135deg, #ff82b2, #ffb0cd);
+  color: #1a0413;
+  box-shadow: 0 4px 22px rgba(255, 130, 178, 0.45);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.45s ease forwards;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.hub-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: #0d0c13;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s, background 0.4s;
+}
+body.free-mode .hub-card {
+  background: rgba(22, 13, 30, 0.68);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 160, 200, 0.22);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+body.free-mode .hub-card:hover {
+  border-color: rgba(255, 140, 190, 0.55);
+  box-shadow: 0 18px 42px rgba(255, 90, 160, 0.22);
+}
+.hub-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(166, 120, 255, 0.45);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+}
+.hub-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.hub-card .badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(166,120,255,0.15);
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.hub-card .badge.free {
+  background: rgba(255, 130, 178, 0.18);
+  color: #ff9cc3;
+  border: 1px solid rgba(255, 130, 178, 0.3);
+}
+.hub-card .folder-pill {
+  font-size: 11px;
+  color: var(--dim);
+  font-weight: 600;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  background: rgba(255,255,255,0.05);
+  padding: 4px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+.hub-card.clickable { cursor: pointer; }
+.hub-card h3 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+.hub-card p {
+  color: var(--dim);
+  font-size: 14px;
+  margin: 0 0 18px;
+}
+.hub-card .action-link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.hub-card .action-link:hover { text-decoration: underline; }
+.card-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.card-actions .action-link { margin-top: 0; }
+.copy-link-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  color: var(--dim);
+  padding: 6px 12px;
+  border-radius: 99px;
+  font: 600 11px 'Manrope', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.copy-link-btn:hover {
+  border-color: var(--accent);
+  color: var(--fg);
+}
+
+/* Skills Truck Section */
+#stack {
+  min-height: 70vh;
+  padding-bottom: 60px;
+}
+#stack h2 {
+  font-size: clamp(32px, 5vw, 58px);
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+#stack h2 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.road {
+  position: relative;
+  overflow: hidden;
+  height: 290px;
+  border-bottom: 2px dashed var(--line);
+}
+.truck {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(680px, 92vw);
+  height: 250px;
+  margin-left: calc(min(680px, 92vw) / -2);
+  transform: translateX(130vw);
+  transition: transform 3.2s cubic-bezier(0.15, 0.75, 0.25, 1);
+}
+.truck.in { transform: none; }
+.cab {
+  position: absolute;
+  left: 0;
+  bottom: 62px;
+  width: 140px;
+  height: 106px;
+  background: var(--accent);
+  border-radius: 60px 10px 4px 4px;
+  transition: background 0.4s ease;
+}
+.cab::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  width: 58px;
+  height: 38px;
+  background: #e9dcff;
+  border-radius: 30px 6px 4px 4px;
+}
+.cab::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: 18px;
+  width: 12px;
+  height: 16px;
+  background: #ffd86b;
+  border-radius: 4px;
+  box-shadow: -28px 0 38px 8px rgba(255,216,107,0.28);
+}
+.chassis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 46px;
+  height: 18px;
+  background: #2a2733;
+  border-radius: 4px;
+}
+.wheel {
+  position: absolute;
+  bottom: 18px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #0c0b10;
+  border: 9px solid #3d3a48;
+}
+.wheel::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  width: 4px;
+  height: 18px;
+  margin-left: -2px;
+  background: #8d8a99;
+  border-radius: 2px;
+}
+.truck:not(.parked) .wheel { animation: roll 0.45s linear infinite; }
+@keyframes roll { to { transform: rotate(360deg); } }
+.cargo {
+  position: absolute;
+  left: 148px;
+  right: 4px;
+  bottom: 64px;
+  height: 165px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 8px;
+}
+.cargo span {
+  font: 500 12px 'Unbounded', sans-serif;
+  padding: 10px 14px;
+  border: 1px solid #4a3a7a;
+  background: #17102a;
+  border-radius: 6px;
+  animation: jig 0.5s ease-in-out infinite;
+}
+.cargo span:nth-child(2n) { animation-duration: 0.42s; animation-delay: -0.1s; background: #241846; }
+.cargo span:nth-child(3n) { animation-duration: 0.58s; animation-delay: -0.25s; border-color: var(--accent); }
+.truck.parked .cargo span { animation-duration: 1.5s; }
+@keyframes jig {
+  0%, 100% { transform: translate(0,0) rotate(0); }
+  30% { transform: translate(1px,-2px) rotate(-1.3deg); }
+  70% { transform: translate(-1px,-1px) rotate(1.3deg); }
+}
+.truck.parked { animation: idle 0.5s ease-in-out infinite; }
+@keyframes idle { 50% { transform: translateY(-1.5px); } }
+
+/* Contact Section */
+#contact {
+  min-height: 60vh;
+  display: grid;
+  align-content: center;
+  text-align: center;
+  justify-items: center;
+  gap: 24px;
+}
+#contact h2 {
+  font-size: clamp(32px, 7vw, 82px);
+  font-weight: 800;
+}
+.btn {
+  border: 1px solid var(--fg);
+  padding: 15px 30px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.25s, color 0.25s, transform 0.2s;
+}
+.btn:hover {
+  background: var(--fg);
+  color: #000;
+  transform: scale(1.03);
+}
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+}
+.btn-secondary {
+  border: 1px solid var(--line);
+  padding: 15px 24px;
+  border-radius: 99px;
+  font-weight: 600;
+  font-size: 14px;
+  background: rgba(255,255,255,0.05);
+  color: var(--fg);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Footer */
+footer {
+  padding: 32px clamp(20px, 7vw, 120px) 48px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--dim);
+  position: relative;
+  z-index: 10;
+}
+
+/* Toast Notification */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #1a1628;
+  color: #fff;
+  border: 1px solid var(--accent);
+  padding: 12px 22px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01s !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Dynamic Pinterest-Inspired Background for Free Stuff Mode -->
+<div id="portrait-bg" aria-hidden="true">
+  <div class="pinterest-gradient"></div>
+  <svg class="portrait-visual" viewBox="0 0 500 650" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="auraPink" cx="50%" cy="40%" r="50%">
+        <stop offset="0%" stop-color="#ff7eb3" stop-opacity="0.65"/>
+        <stop offset="60%" stop-color="#a678ff" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#0a0612" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="silkHair" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ff9ec4"/>
+        <stop offset="50%" stop-color="#b57bff"/>
+        <stop offset="100%" stop-color="#2b1238"/>
+      </linearGradient>
+    </defs>
+    <!-- Soft Aesthetic Halo -->
+    <circle cx="260" cy="240" r="195" fill="url(#auraPink)"/>
+    <circle cx="260" cy="240" r="155" stroke="#ff9cc3" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="6 10"/>
+    <!-- Artistic Editorial Female Portrait Silhouette -->
+    <path d="M165 620 C175 510 215 470 245 450 L245 388 C210 375 190 338 192 290 C194 225 225 182 275 182 C325 182 352 225 348 286 C346 332 328 368 298 386 L298 448 C338 470 385 515 405 620 Z" fill="#180a24" stroke="url(#silkHair)" stroke-width="2.2"/>
+    <!-- Flowing Hair Waves -->
+    <path d="M192 270 C168 220 198 145 278 145 C358 145 395 215 378 310 C366 376 340 420 355 480 C320 440 326 372 338 310 C346 260 330 202 275 202 C226 202 204 238 192 270 Z" fill="url(#silkHair)" opacity="0.55"/>
+    <!-- Minimalist Face Line Art -->
+    <path d="M235 280 Q248 273 260 280" stroke="#ffd2e4" stroke-width="2.4" stroke-linecap="round" opacity="0.8"/>
+    <path d="M292 280 Q305 273 318 280" stroke="#ffd2e4" stroke-width="2.4" stroke-linecap="round" opacity="0.8"/>
+    <path d="M274 285 Q268 312 278 318" stroke="#ff9cc3" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+    <path d="M256 342 Q276 356 296 342" stroke="#ffb3d1" stroke-width="2.6" stroke-linecap="round" opacity="0.85"/>
+    <!-- Floating Sparkles -->
+    <circle cx="120" cy="180" r="4" fill="#ffb3d1" opacity="0.7"/>
+    <circle cx="420" cy="160" r="5" fill="#d7bfff" opacity="0.6"/>
+    <circle cx="405" cy="390" r="3" fill="#ff82b2" opacity="0.8"/>
+  </svg>
+</div>
+
+<!-- Intro Loader -->
+<div id="intro" aria-label="Loading">
+  <div id="beam"></div>
+  <div id="hello">Hello, I’m Pijus.</div>
+  <button id="skip" type="button">Skip</button>
+</div>
+
+<!-- Header -->
+<header>
+  <b>Pijus</b>
+  <nav>
+    <a href="#explore">Works</a>
+    <a href="#stack">Skills</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- Floating Socials -->
+<div class="social">
+  <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">GH</a>
+  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">IN</a>
+  <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">X</a>
+  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+</div>
+<a class="resume" href="#contact">Resume ↗</a>
+
+<!-- Hero Section -->
+<section id="hero">
+  <div>
+    <h1>Pijus<span class="role" id="role"><span>Developer</span></span></h1>
+    <p>I build fast, playful websites and apps. Currently learning 3D on the web and shipping side projects every month.</p>
+  </div>
+  <div class="stage">
+    <div class="glow"></div>
+    <svg id="char" viewBox="0 0 400 440" role="img" aria-label="Interactive character">
+      <g id="body">
+        <path d="M40 440 Q50 350 130 335 L270 335 Q350 350 360 440Z" fill="#2a2733"/>
+        <path d="M165 335 Q200 372 235 335Z" fill="#17151d"/>
+        <rect x="172" y="300" width="56" height="45" rx="14" fill="#c98a62"/>
+      </g>
+      <g id="head">
+        <ellipse cx="102" cy="230" rx="16" ry="26" fill="#d9976d"/>
+        <ellipse cx="298" cy="230" rx="16" ry="26" fill="#d9976d"/>
+        <ellipse cx="200" cy="222" rx="102" ry="130" fill="#e6a77d"/>
+        <!-- Hair -->
+        <path d="M98 198 Q100 80 200 74 Q300 80 302 198 Q200 150 98 198Z" fill="#f2f0f7"/>
+        <path d="M88 190 Q200 135 312 190 Q316 205 304 205 Q200 160 96 205 Q84 205 88 190Z" fill="#cfc9dc"/>
+        <path d="M300 185 Q380 190 372 208 Q330 205 300 200Z" fill="#cfc9dc"/>
+        <!-- Headphone Band & Cups -->
+        <path d="M92 215 Q86 100 200 80 Q314 100 308 215" fill="none" stroke="#a678ff" stroke-width="12" stroke-linecap="round"/>
+        <rect x="76" y="205" width="26" height="52" rx="12" fill="#a678ff"/>
+        <rect x="298" y="205" width="26" height="52" rx="12" fill="#a678ff"/>
+        <!-- Cheeks -->
+        <ellipse cx="140" cy="262" rx="20" ry="11" fill="#f08a7a" opacity=".45"/>
+        <ellipse cx="260" cy="262" rx="20" ry="11" fill="#f08a7a" opacity=".45"/>
+        <!-- Eyebrows -->
+        <g id="browL"><path d="M122 188 Q150 172 178 186" stroke="#2b1a12" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+        <g id="browR"><path d="M222 186 Q250 172 278 188" stroke="#2b1a12" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+        <!-- Eyes -->
+        <g id="eyeL">
+          <circle cx="150" cy="222" r="23" fill="#fff"/>
+          <circle id="pL" cx="150" cy="222" r="11" fill="#2b1a12"/>
+          <circle id="hL" cx="146" cy="217" r="3.5" fill="#fff"/>
+        </g>
+        <g id="eyeR">
+          <circle cx="250" cy="222" r="23" fill="#fff"/>
+          <circle id="pR" cx="250" cy="222" r="11" fill="#2b1a12"/>
+          <circle id="hR" cx="246" cy="217" r="3.5" fill="#fff"/>
+        </g>
+        <!-- Nose & Mouth -->
+        <path d="M200 235 Q192 255 202 258" stroke="#b9764f" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path id="mouth" d="M150 285 Q200 335 250 285 Q200 300 150 285Z" fill="#fff" stroke="#3a1d12" stroke-width="5" stroke-linejoin="round"/>
+      </g>
+    </svg>
+    <span class="hint">Move cursor • Click face to change mood</span>
+  </div>
+</section>
+
+<!-- Interactive Category Section: Portfolio vs Free Stuff -->
+<section id="explore">
+  <div class="hub-header">
+    <h2>Discover <em>Works</em></h2>
+    <p style="color: var(--dim); margin-top: 8px;">Select a category below to explore projects or grab free APKs & tools.</p>
+
+    <div class="hub-tabs" role="tablist">
+      <button class="hub-tab-btn active" id="tab-portfolio" type="button" onclick="switchCategory('portfolio')">
+        <span>✨ Portfolio</span>
+      </button>
+      <button class="hub-tab-btn" id="tab-free" type="button" onclick="switchCategory('free')">
+        <span>🎁 Free Stuff</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Portfolio Tab Pane -->
+  <div id="content-portfolio" class="tab-content active">
+    <div class="hub-grid">
+      <!-- 01: 3D Animation -->
+      <a class="hub-card clickable" id="link-3d-animation" href="https://mega.nz/folder/py4jVDxI#e5yjkm_TAPcX87yGzfBZjQ" target="_blank" rel="noopener noreferrer">
+        <div class="card-top">
+          <span class="badge">Visuals & 3D</span>
+          <span class="folder-pill">MEGA Folder</span>
+        </div>
+        <div class="shot" style="background: radial-gradient(circle at center, #a678ff, #291256); height: 180px; border-radius: 12px; margin-bottom: 20px; display:flex; align-items:center; justify-content:center;">
+          <span style="font-size: 46px;">🎨</span>
+        </div>
+        <h3>3D Animation</h3>
+        <p>Custom 3D character design, short motion clips, and scenes made using Blender and Maya.</p>
+        <div class="card-actions">
+          <span class="action-link">Open on MEGA ↗</span>
+          <button class="copy-link-btn" type="button" onclick="copyCardLink(event, 'https://mega.nz/folder/py4jVDxI#e5yjkm_TAPcX87yGzfBZjQ')">Copy Link</button>
+        </div>
+      </a>
+
+      <!-- 02: AI Content Creation -->
+      <a class="hub-card clickable" id="link-ai-content" href="https://mega.nz/folder/krwWxTAY#EuuSbqZ3lW38FOBi0UGIOg" target="_blank" rel="noopener noreferrer">
+        <div class="card-top">
+          <span class="badge">Generative AI</span>
+          <span class="folder-pill">MEGA Folder</span>
+        </div>
+        <div class="shot" style="height: 180px; border-radius: 12px; margin-bottom: 20px; position:relative; overflow:hidden; background: radial-gradient(circle at 50% 40%, #2f1754 0%, #110822 65%, #080312 100%); display:flex; align-items:center; justify-content:center; box-shadow: inset 0 0 35px rgba(0,0,0,0.8);">
+          <svg viewBox="0 0 320 220" style="width: 100%; height: 100%; overflow: visible;" aria-hidden="true">
+            <defs>
+              <filter id="purpleGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <linearGradient id="crownGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#7935ec" />
+                <stop offset="50%" stop-color="#f0e6ff" />
+                <stop offset="100%" stop-color="#8a44f7" />
+              </linearGradient>
+              <linearGradient id="bodyDarkGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#191326" />
+                <stop offset="100%" stop-color="#0a0711" />
+              </linearGradient>
+            </defs>
+            <circle cx="160" cy="100" r="72" fill="#7535dc" opacity="0.45" filter="url(#purpleGlow)" />
+            <circle cx="160" cy="100" r="68" fill="#5821af" opacity="0.75" />
+            <circle cx="95" cy="80" r="6" fill="#1b1228" stroke="#a678ff" stroke-width="1.5" opacity="0.9"/>
+            <circle cx="115" cy="62" r="8" fill="#120c1d" stroke="#bf9bf8" stroke-width="1.5" />
+            <circle cx="218" cy="74" r="7" fill="#1b1228" stroke="#a678ff" stroke-width="1.5" />
+            <circle cx="236" cy="104" r="8.5" fill="#120c1d" stroke="#cfb4ff" stroke-width="1.5"/>
+            <path d="M70 230 C90 195 125 185 140 178 L140 148 L180 148 L180 178 C195 185 230 195 250 230 Z" fill="url(#bodyDarkGrad)"/>
+            <path d="M140 148 L138 120 C130 114 128 92 135 80 C140 60 152 48 168 48 C188 48 200 64 200 90 C200 108 194 116 182 122 L180 148 Z" fill="#120d1c"/>
+            <path d="M142 86 Q149 84 154 88" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" filter="url(#purpleGlow)"/>
+            <path d="M165 87 Q173 83 180 87" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" filter="url(#purpleGlow)"/>
+            <ellipse cx="168" cy="74" rx="34" ry="11" fill="none" stroke="url(#crownGrad)" stroke-width="4.5" transform="rotate(-9 168 74)" filter="url(#purpleGlow)" />
+            <circle cx="152" cy="73" r="5.5" fill="#0d0816" stroke="#e0caff" stroke-width="1.5" />
+            <circle cx="188" cy="68" r="5" fill="#0d0816" stroke="#e0caff" stroke-width="1.5" />
+          </svg>
+          <div style="position: absolute; bottom: 10px; right: 12px; background: rgba(9, 6, 17, 0.85); backdrop-filter: blur(8px); border: 1px solid rgba(166,120,255,0.3); border-radius: 99px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #d7bfff; display: flex; align-items: center; gap: 5px;">
+            <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#bb8aff; box-shadow:0 0 6px #a678ff;"></span>
+            Surreal 3D AI
+          </div>
+        </div>
+        <h3>AI Content Creation</h3>
+        <p>High-fidelity AI generated imagery, video reels, voice workflows, and prompt engineering creations.</p>
+        <div class="card-actions">
+          <span class="action-link">Open on MEGA ↗</span>
+          <button class="copy-link-btn" type="button" onclick="copyCardLink(event, 'https://mega.nz/folder/krwWxTAY#EuuSbqZ3lW38FOBi0UGIOg')">Copy Link</button>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Free Stuff Tab Pane -->
+  <div id="content-free" class="tab-content">
+    <div class="hub-grid">
+      <!-- Option 1: Free APK -->
+      <a class="hub-card clickable" id="link-free-apk" href="https://mega.nz/folder/s6oAzKjB#jE85ZYnzAbHepQmh-nRYOw" target="_blank" rel="noopener noreferrer">
+        <div class="card-top">
+          <span class="badge free">Android App</span>
+          <span class="folder-pill">MEGA Folder</span>
+        </div>
+        <div class="shot" style="background: radial-gradient(circle at center, #2e122b, #120616); height: 180px; border-radius: 12px; margin-bottom: 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border: 1px solid rgba(255,130,178,0.25);">
+          <svg viewBox="0 0 48 48" width="54" height="54" fill="#ff82b2">
+            <path d="M12 28a3 3 0 0 1 3-3h18a3 3 0 0 1 3 3v10H12V28zm-3 0a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 9 40a2.5 2.5 0 0 1-2.5-2.5v-7A2.5 2.5 0 0 1 9 28zm30 0a2.5 2.5 0 0 1 2.5 2.5v7a2.5 2.5 0 0 1-2.5 2.5 2.5 2.5 0 0 1-2.5-2.5v-7a2.5 2.5 0 0 1 2.5-2.5zm-22.6-7.8l-2.4-4.1a1 1 0 1 1 1.7-1l2.4 4.1a14.7 14.7 0 0 1 6.9-1.7c2.5 0 4.8.6 6.9 1.7l2.4-4.1a1 1 0 1 1 1.7 1l-2.4 4.1A14.9 14.9 0 0 1 36 24H12a14.9 14.9 0 0 1 3.4-3.8zM19 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16 38v4a2 2 0 0 0 4 0v-4h-4zm12 0v4a2 2 0 0 0 4 0v-4h-4z"/>
+          </svg>
+          <span style="font-size: 12px; font-weight:700; color:#ff9cc3; letter-spacing:0.08em; text-transform:uppercase;">Direct APK Download</span>
+        </div>
+        <h3>Free APKs</h3>
+        <p>Custom Android applications, side-loadable utilities, ad-free tools, and lightweight mobile releases.</p>
+        <div class="card-actions">
+          <span class="action-link" style="color: #ff82b2;">Open on MEGA ↗</span>
+          <button class="copy-link-btn" type="button" onclick="copyCardLink(event, 'https://mega.nz/folder/s6oAzKjB#jE85ZYnzAbHepQmh-nRYOw')">Copy Link</button>
+        </div>
+      </a>
+
+      <!-- Option 2: Free Tools -->
+      <a class="hub-card clickable" id="link-free-tools" href="https://mega.nz/folder/8j4wTDCD#M1XWdFl6kzUwaLJsKjst5g" target="_blank" rel="noopener noreferrer">
+        <div class="card-top">
+          <span class="badge free">Web & Creator Tools</span>
+          <span class="folder-pill">MEGA Folder</span>
+        </div>
+        <div class="shot" style="background: radial-gradient(circle at center, #301438, #110517); height: 180px; border-radius: 12px; margin-bottom: 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border: 1px solid rgba(255,130,178,0.25);">
+          <svg viewBox="0 0 48 48" width="54" height="54" fill="none" stroke="#ff82b2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M29.4 6.6a11 11 0 0 0-14 14L4 32l8 8 11.4-11.4a11 11 0 0 0 14-14l-6.8 6.8-4-4 2.8-6.8z"/>
+            <circle cx="36" cy="12" r="2" fill="#ff82b2"/>
+          </svg>
+          <span style="font-size: 12px; font-weight:700; color:#ffb4d2; letter-spacing:0.08em; text-transform:uppercase;">Online Utilities</span>
+        </div>
+        <h3>Free Tools</h3>
+        <p>Browser utilities, AI prompt assistants, converters, and developer helpers accessible instantly online.</p>
+        <div class="card-actions">
+          <span class="action-link" style="color: #ff82b2;">Open on MEGA ↗</span>
+          <button class="copy-link-btn" type="button" onclick="copyCardLink(event, 'https://mega.nz/folder/8j4wTDCD#M1XWdFl6kzUwaLJsKjst5g')">Copy Link</button>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Skills Section -->
+<section id="stack">
+  <h2>My <em>Skills</em></h2>
+  <div class="road">
+    <div class="truck" id="truck">
+      <div class="cargo">
+        <span>Animation</span>
+        <span>Art</span>
+        <span>Drawing</span>
+        <span>AI Tools</span>
+        <span>Frontend</span>
+        <span>TypeScript</span>
+      </div>
+      <div class="cab"></div>
+      <div class="chassis"></div>
+      <i class="wheel" style="left: 20px"></i>
+      <i class="wheel" style="left: 195px"></i>
+      <i class="wheel" style="right: 24px"></i>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+  <h2>Let’s build something.</h2>
+  <p style="color: var(--dim); margin-top: -12px;">Have an interesting project or just want to say hi?</p>
+  <div class="contact-actions">
+    <a class="btn" href="mailto:pijussasmal62@gmail.com">pijussasmal62@gmail.com</a>
+    <button class="btn-secondary" type="button" onclick="copyText('pijussasmal62@gmail.com', 'Email copied!')">Copy Email</button>
+  </div>
+</section>
+
+<footer>
+  <span>© <span id="yr"></span> Pijus Sasmal. All rights reserved.</span>
+</footer>
+
+<!-- Toast Notification -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// Footer year
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Toast helper (replaces alert/confirm safely)
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// Safe Clipboard helper
+function copyText(text, successMsg) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast(successMsg || 'Copied!');
+  } catch (e) {
+    showToast('Copy failed. Please copy manually.');
+  }
+}
+
+// Copy MEGA link without triggering card navigation
+function copyCardLink(event, url) {
+  event.preventDefault();
+  event.stopPropagation();
+  copyText(url, 'MEGA link copied!');
+}
+
+// Helpful notice when testing inside sandboxed Preview iframe
+document.querySelectorAll('a.hub-card[href*="mega.nz"]').forEach(card => {
+  card.addEventListener('click', () => {
+    if (window.self !== window.top) {
+      showToast('Preview external links block karta hai — GitHub par direct khulega, ya Copy Link use karein!');
+    }
+  });
+});
+
+// Category Switcher (Portfolio vs Free Stuff + Dynamic Portrait Background)
+function switchCategory(cat) {
+  const isFree = cat === 'free';
+  document.body.classList.toggle('free-mode', isFree);
+  document.getElementById('tab-portfolio').classList.toggle('active', !isFree);
+  document.getElementById('tab-free').classList.toggle('active', isFree);
+  document.getElementById('content-portfolio').classList.toggle('active', !isFree);
+  document.getElementById('content-free').classList.toggle('active', isFree);
+}
+
+// Intro Loader Trigger
+(function() {
+  const intro = document.getElementById('intro');
+  const skip = document.getElementById('skip');
+  if (!intro) return;
+  const end = () => {
+    intro.classList.add('done');
+    setTimeout(() => { if (intro.parentNode) intro.remove(); }, 900);
+  };
+  setTimeout(() => intro.classList.add('go'), 250);
+  const timer = setTimeout(end, 3200);
+  if (skip) skip.addEventListener('click', () => { clearTimeout(timer); end(); });
+})();
+
+// Rotating Hero Role
+(function() {
+  const words = ['Developer', 'Animator', 'Creator'];
+  let wi = 0;
+  const role = document.querySelector('#role span');
+  if (!role) return;
+  setInterval(() => {
+    wi = (wi + 1) % words.length;
+    role.style.transform = 'translateY(-100%)';
+    setTimeout(() => {
+      role.style.transition = 'none';
+      role.textContent = words[wi];
+      role.style.transform = 'translateY(100%)';
+      role.offsetHeight;
+      role.style.transition = '';
+      role.style.transform = 'translateY(0)';
+    }, 500);
+  }, 2600);
+})();
+
+// Skills Truck Scroll Trigger
+(function() {
+  const truck = document.getElementById('truck');
+  if (!truck) return;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries, obs) => {
+      if (entries[0].isIntersecting) {
+        truck.classList.add('in');
+        setTimeout(() => truck.classList.add('parked'), 3200);
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 }).observe(truck.parentNode);
+  } else {
+    truck.classList.add('in', 'parked');
+  }
+})();
+
+// Interactive Character Eye Tracker & Expressions
+(function(){
+  const $ = id => document.getElementById(id);
+  const svg = $('char');
+  const head = $('head');
+  if (!svg || !head) return;
+
+  const P = [['pL', 150], ['pR', 250]].map(([i, x]) => ({
+    el: $(i),
+    x,
+    h: $(i.replace('p', 'h'))
+  }));
+
+  let mx = 0, my = 0;
+  let px = window.innerWidth / 2;
+  let py = window.innerHeight / 2;
+  let heroVisible = true;
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      heroVisible = entries[0].isIntersecting;
+    }, { threshold: 0.05 }).observe(svg);
+  }
+
+  window.addEventListener('pointermove', e => {
+    if (!heroVisible) return;
+    px = e.clientX;
+    py = e.clientY;
+    const b = svg.getBoundingClientRect();
+    mx = Math.max(-1, Math.min(1, (e.clientX - (b.left + b.width / 2)) / (window.innerWidth / 2)));
+    my = Math.max(-1, Math.min(1, (e.clientY - (b.top + b.height / 2)) / (window.innerHeight / 2)));
+  }, { passive: true });
+
+  let cx = 0, cy = 0;
+  function tick() {
+    if (heroVisible && !document.hidden) {
+      cx += (mx - cx) * 0.12;
+      cy += (my - cy) * 0.12;
+
+      P.forEach(p => {
+        if (!p.el || !p.h) return;
+        const b = svg.getBoundingClientRect();
+        const s = b.width / 400;
+        const dx = px - (b.left + p.x * s);
+        const dy = py - (b.top + 222 * s);
+        const d = Math.hypot(dx, dy) || 1;
+        const f = Math.min(1, d / (160 * s)) * 10;
+
+        p.ox = (p.ox || 0) + ((dx / d * f) - (p.ox || 0)) * 0.25;
+        p.oy = (p.oy || 0) + ((dy / d * f) - (p.oy || 0)) * 0.25;
+
+        p.el.setAttribute('cx', p.x + p.ox);
+        p.el.setAttribute('cy', 222 + p.oy);
+        p.h.setAttribute('cx', p.x - 4 + p.ox * 0.9);
+        p.h.setAttribute('cy', 217 + p.oy * 0.9);
+      });
+
+      head.style.transform = `translate(${cx * 8}px, ${cy * 5}px) rotate(${cx * 4}deg)`;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  const expressions = [
+    { m: 'M150 285 Q200 335 250 285 Q200 300 150 285Z', f: '#fff', bl: 'M122 188 Q150 172 178 186', br: 'M222 186 Q250 172 278 188' },
+    { m: 'M180 292 Q200 330 220 292 Q200 280 180 292Z', f: '#5a1f1f', bl: 'M122 168 Q150 152 178 166', br: 'M222 166 Q250 152 278 168', big: 1 },
+    { m: 'M160 298 Q205 318 245 284', f: 'none', bl: 'M122 192 Q150 178 178 190', br: 'M222 178 Q250 162 278 176' },
+    { m: 'M150 285 Q200 335 250 285 Q200 300 150 285Z', f: '#fff', bl: 'M122 188 Q150 172 178 186', br: 'M222 186 Q250 172 278 188', wink: 1 }
+  ];
+  let k = 0;
+
+  function show(i) {
+    const x = expressions[i];
+    $('mouth').setAttribute('d', x.m);
+    $('mouth').setAttribute('fill', x.f);
+    $('browL').firstElementChild.setAttribute('d', x.bl);
+    $('browR').firstElementChild.setAttribute('d', x.br);
+    $('eyeR').style.transform = x.wink ? 'scaleY(0.08)' : '';
+    $('eyeL').style.transform = x.big ? 'scale(1.12)' : '';
+  }
+
+  svg.addEventListener('click', () => {
+    k = (k + 1) % expressions.length;
+    show(k);
+  });
+
+  setInterval(() => {
+    if (!heroVisible || document.hidden || expressions[k].wink) return;
+    ['eyeL', 'eyeR'].forEach(id => {
+      const el = $(id);
+      if (el) el.style.transform = 'scaleY(0.1)';
+    });
+    setTimeout(() => show(k), 130);
+  }, 3800);
+})();
+</script>
+</body>
+</html>
