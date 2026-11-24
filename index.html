@@ -1219,5 +1219,32 @@ function switchCategory(cat) {
     }, 100);
   });
 </script>
+  <style>
+  body.free-mode {
+    --bg: #f4f8ee;
+    --fg: #1b2a16;
+    --dim: #4c6142;
+    --accent: #558b2f;
+    --accent-glow: rgba(85, 139, 47, 0.35);
+    --line: rgba(85, 139, 47, 0.22);
+  }
+  body.free-mode header { background: rgba(244, 248, 238, 0.85); border-bottom-color: rgba(85, 139, 47, 0.15); }
+  body.free-mode header b { color: #1b2a16; }
+  body.free-mode .pinterest-gradient {
+    background: radial-gradient(circle at 75% 25%, rgba(156, 204, 101, 0.35) 0%, transparent 55%),
+                radial-gradient(circle at 20% 75%, rgba(104, 159, 56, 0.22) 0%, transparent 60%),
+                linear-gradient(180deg, #f8fbf2 0%, #e6f0d8 100%);
+  }
+  body.free-mode .portrait-visual { opacity: 0.15; mix-blend-mode: multiply; filter: hue-rotate(140deg) saturate(0.9); }
+  body.free-mode .hub-tabs { background: rgba(255, 255, 255, 0.78); border-color: rgba(85, 139, 47, 0.28); }
+  body.free-mode .hub-tab-btn.active { background: linear-gradient(135deg, #558b2f, #7cb342); color: #fff; }
+  body.free-mode .hub-card { background: rgba(255, 255, 255, 0.85); border-color: rgba(85, 139, 47, 0.25); }
+  body.free-mode .hub-card .badge.free { background: rgba(124, 179, 66, 0.18); color: #33691e; border-color: rgba(85, 139, 47, 0.35); }
+  body.free-mode .hub-card .action-link { color: #33691e !important; }
+  body.free-mode #content-free .shot { background: radial-gradient(circle at center, #e6f2d5, #d4e8bc) !important; border-color: rgba(85, 139, 47, 0.3) !important; }
+  body.free-mode #content-free .shot span { color: #33691e !important; }
+  body.free-mode #content-free .shot svg { filter: hue-rotate(140deg) saturate(0.85) brightness(0.75); }
+</style>
+
 </body>
 </html>
